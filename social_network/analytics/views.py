@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from .serializers import UserActivitySerializer
 
 from datetime import datetime
-from django.utils import timezone
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
@@ -48,19 +47,3 @@ class UserActivityView(generics.RetrieveAPIView):
             'last_login': user.last_login,
             'last_request': user.last_request,
         }
-
-
-class UserActivityMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        response = self.get_response(request)
-
-        # Set last_request time for authenticated users
-        if request.user.is_authenticated:
-            user = User.objects.get(pk=request.user.pk)
-            user.last_request = timezone.now()
-            user.save()
-
-        return response
