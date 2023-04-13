@@ -14,7 +14,7 @@
 | POST     | /api/post/{post_id}/unlike/ | Анлайк /  Unlike |
 
 ## Analytics
-| Метод  | Endpoint                                                   | Опис                               |
-|:-------|:-----------------------------------------------------------|:-----------------------------------|
-| POST   | /api/analytics/like_count_by_date/?date_from={}&date_to={} | Аналітика створених лайків по даті |
-| POST   | /api/analytics/user_activity/                                  | Активність Юзера                   |
+| Метод | Endpoint                                                   | Опис                               |
+|:------|:-----------------------------------------------------------|:-----------------------------------|
+| GET    | /api/analytics/like_count_by_date/?date_from={}&date_to={} | Аналітика створених лайків по даті |
+| GET   | /api/analytics/user_activity/                                  | Активність Юзера                   |
