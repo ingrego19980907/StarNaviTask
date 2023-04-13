@@ -16,12 +16,12 @@ class AutomatedBot:
         self.created_posts = None
 
     def _generate_username(self):
-        username = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
+        username = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
         print("Username created: ", username)
         return username
 
     def _generate_password(self):
-        password = ''.join(random.choices(string.ascii_letters + string.digits, k=18))
+        password = "".join(random.choices(string.ascii_letters + string.digits, k=18))
         return password
 
     def _signup(self, username, email, password):
@@ -35,7 +35,7 @@ class AutomatedBot:
         if response.status_code == 201:
             return response.json()
         else:
-            raise ValueError(f'Failed to signup user: {response.content}')
+            raise ValueError(f"Failed to signup user: {response.content}")
 
     def _login(self, username, email, password):
         print(f"Login user: {username}")
@@ -48,7 +48,7 @@ class AutomatedBot:
         if response.status_code == 200:
             self.jwt_token = response.json()["access"]
         else:
-            raise ValueError(f'Failed to login user: {response.content}')
+            raise ValueError(f"Failed to login user: {response.content}")
 
     def _create_post(self, content):
         url = self.base_url + "/api/post/create/"
@@ -62,7 +62,7 @@ class AutomatedBot:
 
     def _like_post(self, post_id):
         url = self.base_url + f"/api/post/{post_id}/like/"
-        headers = {'Authorization': f"Bearer {self.jwt_token}", "Content-Type": "application/json"}
+        headers = {"Authorization": f"Bearer {self.jwt_token}", "Content-Type": "application/json"}
         response = requests.post(url, headers=headers)
         if response.status_code != 200:
             raise ValueError(f"Failed to like post: {response.content}")
