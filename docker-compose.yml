@@ -1,0 +1,44 @@
+version: "3.10"
+services:
+
+  db_star_navi:
+    container_name: db_star_navi
+    image: postgres:14
+    restart: unless-stopped
+    profiles: ["dev", "init_all"]
+    command: postgres -c 'max_connections=1000'
+    volumes:
+       - postgres_data:/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+    env_file:
+      - /.env
+
+  django_star_navi_dev:
+    container_name: django_star_navi_dev
+    extends:
+      file: src/docker/docker-compose.django-base.yml
+      service: django
+    profiles: ["dev"]
+    command: ["/bin/bash", "/code/docker/django/start_django.sh"]
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=social_network.settings
+    depends_on:
+      - "db_star_navi"
+
+  django_star_navi_init_all:
+    container_name: django_star_navi_init_all
+    extends:
+      file: src/docker/docker-compose.django-base.yml
+      service: django
+    profiles: ["init_all"]
+    command: ["/bin/bash", "/code/docker/django/init_all.sh"]
+    environment:
+      - DJANGO_SETTINGS_MODULE=social_network.settings
+    restart: "no"
+    depends_on:
+      - "db_star_navi"
+volumes:
+  postgres_data:
